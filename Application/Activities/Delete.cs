@@ -23,7 +23,7 @@ public class Delete
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var activity = await dataContext.activities.FindAsync(request.Id);
-            if (activity == null) return null;
+         //   if (activity == null) return null;
             dataContext.activities.Remove(activity);
             var result = await dataContext.SaveChangesAsync() > 0;
             if (!result) return Result<Unit>.Failure("Sorry,Failed To Delete Activity");
