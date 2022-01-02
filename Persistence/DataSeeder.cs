@@ -1,20 +1,39 @@
 using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence;
 public class DataSeeder
 {
     private readonly DataContext _dataContext;
+    private readonly UserManager<AppUser> userManager;
 
-        public DataSeeder(DataContext dataContext)
+    public DataSeeder(DataContext dataContext, UserManager<AppUser> userManager)
+    {
+        _dataContext = dataContext;
+        this.userManager = userManager;
+    }
+
+    public void Seed()
+    {
+        if (!userManager.Users.Any())
         {
-            _dataContext = dataContext;
+            var users = new List<AppUser>
+                {
+                    new AppUser{Bio = "developer" ,DisplayName = "sasan" , UserName="Sasan" , Email="sasan@test.com"},
+                    new AppUser{Bio = "architecture" ,DisplayName = "babak" , UserName="Babak" , Email="babak@test.com"},
+                    new AppUser{Bio= "docter" ,DisplayName = "sina" , UserName="Sina" , Email="sina@test.com"}
+                };
+
+            users.ForEach(async x => await userManager.CreateAsync(x, "Pa$$w0rd"));
+            _dataContext.Users.AddRange(users);
+            _dataContext.SaveChanges();
         }
 
-        public void Seed()
+
+
+        if (!_dataContext.activities.Any())
         {
-            if(!_dataContext.activities.Any())
-            {
-                var activities = new List<Activity>()
+            var activities = new List<Activity>()
                 {
                     new Activity
                     {
@@ -72,8 +91,8 @@ public class DataSeeder
                     }
                 };
 
-                _dataContext.activities.AddRange(activities);
-                _dataContext.SaveChanges();
-            }
+            _dataContext.activities.AddRange(activities);
+            _dataContext.SaveChanges();
         }
+    }
 }

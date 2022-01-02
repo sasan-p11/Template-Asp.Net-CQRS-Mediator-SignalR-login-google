@@ -12,6 +12,7 @@ builder.Services.AddControllers().AddFluentValidation(config=>{
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddApplicationService(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
 
