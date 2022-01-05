@@ -2,12 +2,17 @@ using API.Extensions;
 using API.Middleware;
 using Application.Activities;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers().AddFluentValidation(config =>
+builder.Services.AddControllers(opt=>{
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    opt.Filters.Add(new AuthorizeFilter(policy));
+}).AddFluentValidation(config =>
 {
     config.RegisterValidatorsFromAssemblyContaining<ActivityValidator>();
 });
