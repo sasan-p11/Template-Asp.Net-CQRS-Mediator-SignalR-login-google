@@ -7,7 +7,8 @@ using Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers().AddFluentValidation(config=>{
+builder.Services.AddControllers().AddFluentValidation(config =>
+{
     config.RegisterValidatorsFromAssemblyContaining<ActivityValidator>();
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,6 +42,7 @@ void SeedData(IHost app)
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
