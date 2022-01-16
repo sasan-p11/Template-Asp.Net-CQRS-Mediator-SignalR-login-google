@@ -1,5 +1,7 @@
 using Application.Activities;
 using Application.Core;
+using Application.Interface;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -19,7 +21,7 @@ public static class ApplicationServiceExtensions
         services.AddTransient<DataSeeder>();
         services.AddMediatR(typeof(List.Handler).Assembly);
         services.AddAutoMapper(typeof(MapingProfile).Assembly);
-
+        services.AddScoped<IUserAccessor , UserAccessor>();
 
         return services;
     }
